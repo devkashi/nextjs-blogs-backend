@@ -1,0 +1,14 @@
+.login-wrap {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    background: linear-gradient(0deg,rgba(253, 228, 86, 0.45),rgba(241, 89, 26, 0.72)),url(http://projects.techiesquad.in/servico/images/25101.jpg);
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+}
