@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
 use App\Models\Blog;
+use App\Models\Blogcomment;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
@@ -168,6 +169,82 @@ class BlogController extends BaseController
         if ($blog) {
             $success['blog'] = $blog;
             return $this->sendResponse($success, 'Blog updated successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'Something went wrong, please try again']);
+        }
+    }
+
+    // like and unlike
+
+    public function getAllLikes(Request $request)
+    {
+        $likes = Blog::find($request->id);
+        $likes = $likes->likes;
+        if ($likes) {
+            $success['likes'] = $likes;
+            return $this->sendResponse($success, 'likes fetched successfully.');
+        }
+        return $this->sendError('Error', ['error' => 'Something went wrong, please try again']);
+    }
+
+    public function addLike(Request $request)
+    {
+        $blog = Blog::find($request->id);
+        $blog->likes = $blog->likes + 1;
+        $blog->save();
+        if ($blog) {
+            $success['blog'] = $blog;
+            return $this->sendResponse($success, 'like updated successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'Something went wrong, please try again']);
+        }
+    }
+
+    public function deleteLike(Request $request)
+    {
+        $blog = Blog::find($request->id);
+        $blog->likes = $blog->likes - 1;
+        $blog->save();
+        if ($blog) {
+            $success['blog'] = $blog;
+            return $this->sendResponse($success, 'like updated successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'Something went wrong, please try again']);
+        }
+    }
+    // comments
+
+    public function getAllComments(Request $request)
+    {
+        $comments = Blogcomment::where('blog_id', $request->blog_id)->get();
+        if ($comments) {
+            $success['comments'] = $comments;
+            return $this->sendResponse($success, 'Comments fetched successfully.');
+        }
+        return $this->sendError('Error', ['error' => 'Something went wrong, please try again']);
+    }
+
+    public function addComment(Request $request)
+    {
+        $comment = new Blogcomment();
+        $comment->comment = $request->comment;
+        $comment->blog_id = $request->blog_id;
+        $comment->save();
+        if ($comment) {
+            $success['comment'] = $comment;
+            return $this->sendResponse($success, 'Comment added successfully.');
+        } else {
+            return $this->sendError('Error', ['error' => 'Something went wrong, please try again']);
+        }
+    }
+
+    public function deleteComment(Request $request)
+    {
+        $comment = Blogcomment::find($request->id);
+        $comment->delete();
+        if ($comment) {
+            $success['comment'] = $comment;
+            return $this->sendResponse($success, 'Comment deleted successfully.');
         } else {
             return $this->sendError('Error', ['error' => 'Something went wrong, please try again']);
         }
