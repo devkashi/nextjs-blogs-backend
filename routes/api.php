@@ -43,6 +43,7 @@ Route::post('list/blog', [BlogController::class, 'getAllBlog']);
 Route::post('delete/blog/{id}', [BlogController::class, 'deleteBlog']);
 Route::post('update/blog', [BlogController::class, 'updateBlog']);
 Route::post('fetch/single-blog', [BlogController::class, 'getSingleBlog']);
+
 Route::post('add/like-blog', [BlogController::class, 'addLike']);
 Route::post('remove/like-blog', [BlogController::class, 'deleteLike']);
 Route::post('fetch/like-blog', [BlogController::class, 'getAllLikes']);
